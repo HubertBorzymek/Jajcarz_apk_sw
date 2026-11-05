@@ -1,4 +1,5 @@
 using Jajcarz.Application.Abstractions;
+using Jajcarz.Domain.Accounts;
 using Jajcarz.Domain.Panels;
 using Jajcarz.Domain.Products;
 using Microsoft.EntityFrameworkCore;
@@ -48,7 +49,15 @@ public sealed class EfStore(JajcarzDbContext db, WriteGate gate) : IStore
 
     public void Add(Product product) => db.Products.Add(product);
 
+    public void Add(User user) => db.Users.Add(user);
+
     public void Remove(Product product) => db.Products.Remove(product);
+
+    public Task<User?> FindUserAsync(Guid id, CancellationToken cancellationToken) =>
+        db.Users.SingleOrDefaultAsync(user => user.Id == id, cancellationToken);
+
+    public Task<User?> FindUserByLoginAsync(string login, CancellationToken cancellationToken) =>
+        db.Users.SingleOrDefaultAsync(user => user.Login == login, cancellationToken);
 
     public Task<Device?> FindDeviceAsync(string id, CancellationToken cancellationToken) =>
         db.Devices.SingleOrDefaultAsync(device => device.Id == id, cancellationToken);
@@ -61,6 +70,12 @@ public sealed class EfStore(JajcarzDbContext db, WriteGate gate) : IStore
 
     public async Task<IReadOnlyList<Product>> ListProductsAsync(IReadOnlyCollection<Guid> ids, CancellationToken cancellationToken) =>
         await db.Products.Where(product => ids.Contains(product.Id)).ToListAsync(cancellationToken);
+
+    public async Task<IReadOnlyList<Product>> ListProductsAsync(CancellationToken cancellationToken) =>
+        await db.Products.ToListAsync(cancellationToken);
+
+    public async Task<IReadOnlyList<PanelKey>> ListBoundKeysAsync(CancellationToken cancellationToken) =>
+        await db.PanelKeys.Where(key => key.ProductId != null).ToListAsync(cancellationToken);
 
     public Task<PanelKey?> FindKeyAsync(string deviceId, string addr, CancellationToken cancellationToken) =>
         db.PanelKeys.SingleOrDefaultAsync(key => key.DeviceId == deviceId && key.Addr == addr, cancellationToken);

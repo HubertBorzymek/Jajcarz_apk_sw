@@ -42,6 +42,13 @@ public sealed class Product
 
     public DateTimeOffset CreatedAt { get; private set; }
 
+    /// <summary>Nazwa i kategoria nie dotyczą panelu, więc rev się nie zmienia.</summary>
+    public void Update(string name, string? category)
+    {
+        Name = name;
+        Category = category;
+    }
+
     public void Apply(StateChange change, long rev)
     {
         State = change.State;

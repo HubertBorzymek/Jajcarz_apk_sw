@@ -1,4 +1,5 @@
 using Jajcarz.Application.Abstractions;
+using Jajcarz.Application.Accounts;
 using Jajcarz.Application.Panels;
 using Jajcarz.Application.Products;
 using Jajcarz.Domain.Panels;
@@ -13,7 +14,9 @@ public static class DevelopmentSeed
 
     private sealed record SeedProduct(string Name, string Addr);
 
-    private sealed record SeedOptions(string DeviceId, string Token, SeedProduct[] Products);
+    private sealed record SeedUser(string Login, string Password);
+
+    private sealed record SeedOptions(string DeviceId, string Token, SeedProduct[] Products, SeedUser[]? Users);
 
     public static async Task ApplyAsync(IServiceProvider services, IConfiguration configuration)
     {
@@ -24,6 +27,15 @@ public static class DevelopmentSeed
         }
 
         await using var scope = services.CreateAsyncScope();
+        var accounts = scope.ServiceProvider.GetRequiredService<AccountService>();
+        foreach (var user in options.Users ?? [])
+        {
+            if (!await accounts.UserExistsAsync(user.Login, CancellationToken.None))
+            {
+                await accounts.SetPasswordAsync(user.Login, user.Password, CancellationToken.None);
+            }
+        }
+
         var store = scope.ServiceProvider.GetRequiredService<IStore>();
         if (await store.FindDeviceAsync(options.DeviceId, CancellationToken.None) is not null)
         {

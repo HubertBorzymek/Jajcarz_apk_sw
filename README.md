@@ -10,8 +10,9 @@ opisuje [docs/PROTOCOL.md](docs/PROTOCOL.md).
 
 ## Stan projektu
 
-Działa serwer panelu: połączenie, synchronizacja stanów, konflikty i trwałe dane.
-Interfejsu dla użytkownika jeszcze nie ma.
+Działa serwer panelu oraz aplikacja: logowanie, lista produktów, szybka zmiana stanu,
+dodawanie, edycja i usuwanie oraz zmiany na żywo w obie strony. Widok zakupowy i praca
+bez zasięgu dojdą w `v0.3.0`.
 
 | Wersja | Zakres |
 |---|---|
@@ -24,21 +25,40 @@ Interfejsu dla użytkownika jeszcze nie ma.
 
 ## Uruchomienie lokalne
 
-Potrzebny jest .NET SDK 10. Otwórz `Jajcarz.slnx` w Visual Studio 2026 albo uruchom:
+Potrzebne są .NET SDK 10 i Node 24. Najpierw zbuduj interfejs, potem uruchom serwer:
 
 ```powershell
-cd src\Jajcarz.Server
+cd src\Jajcarz.WebClient
+npm ci
+npm run build
+cd ..\Jajcarz.Server
 dotnet run --launch-profile Jajcarz.Server
 ```
 
-Serwer nasłuchuje na porcie 5080. Lokalnie używa pliku SQLite i przy pierwszym starcie
-tworzy przykładowe produkty oraz panel z tokenem `test-token`, opisane
-w `appsettings.Development.json`. Produkcja używa bazy Postgres.
+Aplikacja działa pod `http://localhost:5080`, a w tej samej sieci także pod adresem
+komputera. Lokalnie używa pliku SQLite i przy pierwszym starcie tworzy przykładowe
+produkty, panel z tokenem `test-token` oraz konto `test` z hasłem `test-password`,
+opisane w `appsettings.Development.json`. Produkcja używa bazy Postgres.
+
+Przy pracy nad interfejsem `npm run dev` w `src\Jajcarz.WebClient` odświeża stronę
+na bieżąco i przekazuje `/api` do działającego serwera.
+
+## Konta
+
+Nie ma rejestracji. Konto zakłada się na serwerze, a hasło podaje na standardowym wejściu:
+
+```powershell
+"nowe-haslo" | dotnet Jajcarz.Server.dll user set hubert
+```
+
+To samo polecenie zmienia hasło i wylogowuje to konto ze wszystkich urządzeń.
 
 ## Testy
 
 ```powershell
 dotnet test Jajcarz.slnx
+cd src\Jajcarz.WebClient
+npm test
 ```
 
 Symulator panelu wysyła dokładnie te same wiadomości co firmware. Testy na prawdziwym
@@ -49,10 +69,11 @@ sprzęcie opisuje [docs/TESTY_MANUALNE.md](docs/TESTY_MANUALNE.md).
 | Folder | Zawartość |
 |---|---|
 | `src/Jajcarz.Domain` | Produkty, klawisze i reguły konfliktów |
-| `src/Jajcarz.Application` | Operacje aplikacji |
+| `src/Jajcarz.Application` | Operacje aplikacji i konta |
 | `src/Jajcarz.Infrastructure` | Baza danych |
-| `src/Jajcarz.Server` | Połączenie z panelem i uruchomienie serwera |
-| `tests` | Testy reguł i symulator panelu |
+| `src/Jajcarz.Server` | Połączenie z panelem, API, logowanie i uruchomienie serwera |
+| `src/Jajcarz.WebClient` | Interfejs w React |
+| `tests` | Testy reguł, API i symulator panelu |
 
 Stan należy do produktu, a klawisz jest do niego tylko przypięty. Dzięki temu produkt
 można przenieść na inny klawisz bez utraty stanu.

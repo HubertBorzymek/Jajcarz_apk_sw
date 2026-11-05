@@ -2,6 +2,18 @@
 
 Najnowsze na górze. Krótko: co, dlaczego, co dalej.
 
+## 2026-11-06 (v0.2.0, bez taga)
+
+- Konta: PBKDF2, cookie na rok, `SessionStamp`, CSRF, limit logowań, polecenie `user set`.
+- REST `/api/products`, SSE `/api/events`, `ProductEvents` publikowane przed zwolnieniem zapisu.
+- Interfejs w `src/Jajcarz.WebClient`, budowany do `Jajcarz.Server/wwwroot`.
+- Parametry `ProductService` w endpointach muszą mieć `[FromServices]`, bo jego
+  metoda `BindAsync` myli wiązanie Minimal API.
+- Zweryfikowano: 93 testy .NET, 18 testów interfejsu, 8 celowych błędów wykrytych,
+  w przeglądarce logowanie, zmiany stanu, edycja, usuwanie, dwie karty, restart serwera.
+- Niezweryfikowane: nowa migracja na Postgresie, klawisze panelu widoczne w aplikacji.
+- Następny krok: test z panelem i telefonem z `docs/TESTY_MANUALNE.md`, potem `v0.3.0`.
+
 ## 2026-11-05 (v0.1.0, testy na panelu)
 
 - CI przeszło, także migracja i testy na Postgresie.

@@ -1,4 +1,5 @@
 using Jajcarz.Application.Abstractions;
+using Jajcarz.Application.Products;
 using Jajcarz.Domain.Panels;
 using Jajcarz.Domain.Products;
 using Microsoft.Extensions.Logging;
@@ -7,7 +8,12 @@ namespace Jajcarz.Application.Panels;
 
 /// <summary>Obsługa wiadomości od panelu.</summary>
 public sealed class PanelService(
-    IStore store, PanelLinks links, SnapshotBuilder snapshots, TimeProvider clock, ILogger<PanelService> logger)
+    IStore store,
+    PanelLinks links,
+    SnapshotBuilder snapshots,
+    ProductEvents events,
+    TimeProvider clock,
+    ILogger<PanelService> logger)
 {
     public async Task<string?> AuthenticateAsync(string token, CancellationToken cancellationToken)
     {
@@ -56,6 +62,10 @@ public sealed class PanelService(
 
         var outcome = await ApplyAsync(deviceId, message, key, product, cancellationToken);
         await write.CommitAsync(cancellationToken);
+        if (outcome == ChangeOutcome.Accepted)
+        {
+            events.Publish(new ProductUpdated(ProductView.From(product, key.Addr)));
+        }
         links.Send(deviceId, new AckMessage(
             message.Seq, message.Addr, outcome != ChangeOutcome.Rejected, product.State, product.Rev));
     }

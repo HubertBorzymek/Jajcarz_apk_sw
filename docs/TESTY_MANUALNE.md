@@ -2,6 +2,20 @@
 
 Testy wymagające panelu. Wynik zaznacz `[x]`, a problem opisz pod punktem.
 
+## v0.2.0: aplikacja z panelem i telefonem
+
+Przygotowanie jak dla sekcji sieci lokalnej niżej. Zaloguj się kontem `test` z hasłem
+`test-password` na telefonie pod adresem `http://<IP_komputera>:5080`.
+
+- [ ] Klawisz na panelu zmienia stan w aplikacji bez odświeżania, a autor to „panel”.
+- [ ] Przycisk w aplikacji zmienia kolor klawisza na panelu.
+- [ ] Telefon i komputer pokazują tę samą zmianę bez odświeżania.
+- [ ] Zmiana jedną ręką jest wygodna, a przyciski stanu są w zasięgu kciuka.
+- [ ] Po wyłączeniu Wi-Fi w telefonie aplikacja pokazuje brak połączenia i wraca po włączeniu.
+- [ ] Po zamknięciu i otwarciu przeglądarki telefon jest dalej zalogowany.
+
+Po zaliczeniu tej sekcji: tag `v0.2.0`.
+
 ## v0.1.0: panel w sieci lokalnej
 
 Przygotowanie:

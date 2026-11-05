@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Jajcarz.Domain.Accounts;
 using Jajcarz.Domain.Panels;
 using Jajcarz.Domain.Products;
 using Microsoft.EntityFrameworkCore;
@@ -53,6 +54,19 @@ internal sealed class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder.Property(product => product.State).HasConversion<string>().HasMaxLength(MaxStateLength);
         builder.Property(product => product.ChangedBy).HasMaxLength(MaxActorLength);
         builder.Property(product => product.LastChangeKey).HasMaxLength(MaxChangeKeyLength);
+    }
+}
+
+internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
+{
+    private const int MaxPasswordHashLength = 200;
+
+    public void Configure(EntityTypeBuilder<User> builder)
+    {
+        builder.HasKey(user => user.Id);
+        builder.Property(user => user.Login).HasMaxLength(User.MaxLoginLength);
+        builder.HasIndex(user => user.Login).IsUnique();
+        builder.Property(user => user.PasswordHash).HasMaxLength(MaxPasswordHashLength);
     }
 }
 

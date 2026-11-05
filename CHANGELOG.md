@@ -1,5 +1,13 @@
 # Historia zmian
 
+## Niewydane
+
+### Dodano
+- Logowanie: konta bez rejestracji, sesja na rok i wylogowanie urządzeń po zmianie hasła.
+- API produktów: lista, dodawanie, edycja, usuwanie i zmiana stanu.
+- Zmiany na żywo między panelem, telefonem i komputerem.
+- Aplikacja na telefon i komputer: lista produktów i szybka zmiana stanu jedną ręką.
+
 ## v0.1.0 (2026-11-05)
 
 ### Dodano

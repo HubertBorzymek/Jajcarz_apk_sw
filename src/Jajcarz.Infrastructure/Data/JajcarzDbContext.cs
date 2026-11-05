@@ -1,3 +1,4 @@
+using Jajcarz.Domain.Accounts;
 using Jajcarz.Domain.Panels;
 using Jajcarz.Domain.Products;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,8 @@ public sealed class JajcarzDbContext(DbContextOptions<JajcarzDbContext> options)
     public DbSet<Product> Products => Set<Product>();
 
     public DbSet<RevCounter> RevCounters => Set<RevCounter>();
+
+    public DbSet<User> Users => Set<User>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) =>
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(JajcarzDbContext).Assembly);

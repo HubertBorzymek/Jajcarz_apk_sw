@@ -1,4 +1,5 @@
 using Jajcarz.Application.Abstractions;
+using Jajcarz.Application.Accounts;
 using Jajcarz.Application.Panels;
 using Jajcarz.Application.Products;
 using Jajcarz.Domain.Panels;
@@ -29,6 +30,8 @@ public sealed class TestApp : WebApplicationFactory<Program>, IAsyncLifetime
 {
     public const string DeviceId = "aabbccddeeff";
     public const string Token = "panel-test-token";
+    public const string UserLogin = "hubert";
+    public const string UserPassword = "haslo-testowe";
     public const string User = "web:hubert";
 
     private static readonly string? PostgresServer = Environment.GetEnvironmentVariable("JAJCARZ_TEST_POSTGRES");
@@ -67,6 +70,9 @@ public sealed class TestApp : WebApplicationFactory<Program>, IAsyncLifetime
             store.Add(new Device(DeviceId, DeviceToken.Hash(Token)));
             await write.CommitAsync(CancellationToken.None);
         });
+        await using var scope = Services.CreateAsyncScope();
+        await scope.ServiceProvider.GetRequiredService<AccountService>()
+            .SetPasswordAsync(UserLogin, UserPassword, CancellationToken.None);
     }
 
     async Task IAsyncLifetime.DisposeAsync()

@@ -20,3 +20,4 @@ secrets.json
 # Interfejs
 node_modules/
 dist/
+src/Jajcarz.Server/wwwroot/

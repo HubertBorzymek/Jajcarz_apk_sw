@@ -1,3 +1,4 @@
+using Jajcarz.Application.Accounts;
 using Jajcarz.Application.Panels;
 using Jajcarz.Application.Products;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +12,8 @@ public static class ApplicationServices
     {
         services.TryAddSingleton(TimeProvider.System);
         services.AddSingleton<PanelLinks>();
+        services.AddSingleton<ProductEvents>();
+        services.AddScoped<AccountService>();
         services.AddScoped<SnapshotBuilder>();
         services.AddScoped<PanelService>();
         services.AddScoped<ProductService>();

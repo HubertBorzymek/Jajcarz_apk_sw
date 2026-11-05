@@ -25,9 +25,10 @@ Firmware: `C:\Users\leemi\Documents\Projects\Esp32\Jajcarz_sw`, gałąź `rev0`.
 src/Jajcarz.Domain/          produkty, klawisze, ConflictPolicy, bez EF i HTTP
 src/Jajcarz.Application/     PanelService, ProductService, PanelLinks, IStore
 src/Jajcarz.Infrastructure/  EF Core, EfStore, migracje (tylko Postgres)
-src/Jajcarz.Server/          /ws/device, Program, seed lokalny
+src/Jajcarz.Server/          /ws/device, Api/ (REST, SSE), logowanie, seed lokalny
+src/Jajcarz.WebClient/       React + Vite, budowany do Jajcarz.Server/wwwroot
 tests/Jajcarz.Domain.Tests/       reguły
-tests/Jajcarz.Integration.Tests/  FakePanel, wiadomości jak z firmware
+tests/Jajcarz.Integration.Tests/  FakePanel, ApiClient, wiadomości jak z firmware
 ```
 
 ## Wiążące decyzje
@@ -49,16 +50,26 @@ tests/Jajcarz.Integration.Tests/  FakePanel, wiadomości jak z firmware
 - Zerwanie wykrywa ping serwera (`KeepAliveTimeout`), bo pingi panelu nie docierają do kodu.
 - Token panelu: w bazie tylko SHA-256, `device_id` z `hello` musi zgadzać się z tokenem.
 - Nowy panel na pustej bazie jest ciemny, dopóki produkty nie zostaną przypięte.
+- Konta bez rejestracji: `user set <login>` z hasłem na stdin. Autor zmiany to `web:<login>`.
+- Cookie na rok, ale `SessionStamp` w claimach: zmiana hasła wylogowuje wszystkie urządzenia.
+- Każda zmiana przez REST wymaga nagłówka `X-CSRF-TOKEN` z `GET /api/session`.
+- Do przeglądarki SSE: po połączeniu najpierw cała lista, potem zmiany. `ProductEvents`
+  publikujemy przed zwolnieniem zapisu, żeby kolejność była taka jak w bazie.
+- Odbiorca SSE, który nie nadąża, jest rozłączony i po połączeniu dostaje całą listę.
+- Klawisze w interfejsie liczymy od 1: adres `0.2` to „klawisz 3”.
+- W endpointach pisz `[FromServices] ProductService`: metoda `BindAsync` myli wiązanie.
 
 ## Środowisko
 
 - .NET SDK 10.0.401, Node 24. Brak lokalnie: `az`, `docker`, `psql`, `gh`.
+- Interfejs: `npm run build` w `src/Jajcarz.WebClient`, potem odśwież stronę na porcie 5080.
+- Zmiana modelu wymaga usunięcia lokalnego `jajcarz.dev.db`, bo SQLite używa `EnsureCreated`.
 - Lokalnie SQLite (`EnsureCreated`), w produkcji Postgres (migracje). Bez Dockera.
 - Testy: `dotnet test Jajcarz.slnx`. Na Postgresie: zmienna `JAJCARZ_TEST_POSTGRES`,
   działa w CI. Migracja: `dotnet ef migrations add <Nazwa> --project
   src/Jajcarz.Infrastructure --startup-project src/Jajcarz.Infrastructure --output-dir Data/Migrations`.
 - Serwer lokalny: `dotnet run --launch-profile Jajcarz.Server` w `src/Jajcarz.Server`,
-  port 5080, dane z `DevSeed`, token `test-token`.
+  port 5080, dane z `DevSeed`, token `test-token`, konto `test` i hasło `test-password`.
 - Nie używaj `dotnet run --environment`: ustawienie nie dociera do aplikacji.
 
 ## Plan
@@ -67,7 +78,7 @@ tests/Jajcarz.Integration.Tests/  FakePanel, wiadomości jak z firmware
   `v0.4.0` ekran panelu, `v0.5.0` Docker i wdrożenie testowe, `v1.0.0` produkcja.
 - Wdrożenie: wspólna maszyna `vm-trumpfish`, własne kontenery i Postgres w `/opt/jajcarz`,
   własna nazwa hosta przez Caddy Trumpfisha. React + Vite + PWA, SSE do przeglądarki.
-- Konta: 4 osoby, bez rejestracji, cookie roczne. Produkt: nazwa i opcjonalna kategoria.
+- Konta: 4 osoby, loginy jeszcze nieustalone. Produkt: nazwa i opcjonalna kategoria.
 - „Kupione” w sklepie: od razu `OK`, przekreślenie do wyjścia z widoku, chwila na cofnięcie.
 
 ## Otwarte

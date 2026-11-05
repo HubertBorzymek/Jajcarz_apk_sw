@@ -1,3 +1,4 @@
+using Jajcarz.Domain.Accounts;
 using Jajcarz.Domain.Panels;
 using Jajcarz.Domain.Products;
 
@@ -25,7 +26,13 @@ public interface IStore
 
     void Add(Product product);
 
+    void Add(User user);
+
     void Remove(Product product);
+
+    Task<User?> FindUserAsync(Guid id, CancellationToken cancellationToken);
+
+    Task<User?> FindUserByLoginAsync(string login, CancellationToken cancellationToken);
 
     Task<Device?> FindDeviceAsync(string id, CancellationToken cancellationToken);
 
@@ -34,6 +41,11 @@ public interface IStore
     Task<Product?> FindProductAsync(Guid id, CancellationToken cancellationToken);
 
     Task<IReadOnlyList<Product>> ListProductsAsync(IReadOnlyCollection<Guid> ids, CancellationToken cancellationToken);
+
+    Task<IReadOnlyList<Product>> ListProductsAsync(CancellationToken cancellationToken);
+
+    /// <summary>Klawisze z przypiętym produktem, ze wszystkich paneli.</summary>
+    Task<IReadOnlyList<PanelKey>> ListBoundKeysAsync(CancellationToken cancellationToken);
 
     Task<PanelKey?> FindKeyAsync(string deviceId, string addr, CancellationToken cancellationToken);
 

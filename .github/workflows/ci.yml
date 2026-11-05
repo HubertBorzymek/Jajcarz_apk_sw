@@ -55,3 +55,17 @@ jobs:
         run: dotnet test Jajcarz.slnx --configuration Release --no-build
         env:
           JAJCARZ_TEST_POSTGRES: Host=localhost;Username=postgres;Password=ci-only
+
+      - name: Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: src/Jajcarz.WebClient/package-lock.json
+
+      - name: Interfejs
+        working-directory: src/Jajcarz.WebClient
+        run: |
+          npm ci
+          npm run build
+          npm test

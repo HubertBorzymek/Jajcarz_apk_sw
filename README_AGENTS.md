@@ -72,7 +72,7 @@ tests/Jajcarz.Integration.Tests/  FakePanel, wiadomości jak z firmware
 
 ## Otwarte
 
-- Test `wss` i test w sieci lokalnej czekają na podłączony panel: `docs/TESTY_MANUALNE.md`.
+- SW2 (`0.1`, GPIO33) nie zgłasza naciśnięć. Podejrzany sprzęt, potrzebny pomiar na płytce.
+- `LastSeenAt` zmienia się tylko przy części wiadomości. Popraw przed ekranem panelu w `v0.4.0`.
 - Brak domeny. Właściciel jej nie ma, a decyzja o zakupie należy do niego.
 - Przed `v0.5.0`: odczyt pamięci maszyny i ustalenie dostępu do Azure.
-- Testy na Postgresie i CI ruszą dopiero po pierwszym pushu.

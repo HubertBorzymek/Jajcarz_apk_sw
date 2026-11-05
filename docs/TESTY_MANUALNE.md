@@ -45,5 +45,6 @@ Wynik z 2026-11-05: obie sekcje zaliczone na panelu `v0.3.0-2-gd62107c`. Odcięc
 zastąpiło trzymanie panelu w resecie, wykrycie po 61 s. Trumpfish odrzucił handshake
 odpowiedzią HTTP 200 bez `Sec-WebSocket-Accept`.
 
-Problem sprzętowy poza listą: naciśnięcia SW2 (`0.1`, GPIO33) nie docierają do firmware,
-choć pin nie ma innego użycia w kodzie. Ten klawisz działał przy testach firmware `v0.1.0`.
+Uwaga poza listą: SW2 (`0.1`, GPIO33) przez kilka minut nie zgłaszał naciśnięć, a potem
+zaczął działać bez restartu i bez wgrywania firmware. Przyczyny nie ustalono, podejrzany
+jest styk na płytce. Jeśli się powtórzy, zmierz napięcie na GPIO33 przy naciśnięciu.

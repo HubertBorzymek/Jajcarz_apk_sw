@@ -11,8 +11,9 @@ Najnowsze na górze. Krótko: co, dlaczego, co dalej.
   metoda `BindAsync` myli wiązanie Minimal API.
 - Zweryfikowano: 93 testy .NET, 18 testów interfejsu, 8 celowych błędów wykrytych,
   w przeglądarce logowanie, zmiany stanu, edycja, usuwanie, dwie karty, restart serwera.
-- Niezweryfikowane: nowa migracja na Postgresie, klawisze panelu widoczne w aplikacji.
-- Następny krok: test z panelem i telefonem z `docs/TESTY_MANUALNE.md`, potem `v0.3.0`.
+- Właściciel potwierdził działanie aplikacji z panelem. Reszta listy testów bez wyniku.
+- Niezweryfikowane: nowa migracja na Postgresie, pozostałe punkty sekcji `v0.2.0`.
+- Następny krok: push po zgodzie, wynik CI, reszta testów, tag `v0.2.0`, potem `v0.3.0`.
 
 ## 2026-11-05 (v0.1.0, testy na panelu)
 

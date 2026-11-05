@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Jajcarz.Domain/Jajcarz.Domain.csproj" />
+    <Project Path="src/Jajcarz.Application/Jajcarz.Application.csproj" />
+    <Project Path="src/Jajcarz.Infrastructure/Jajcarz.Infrastructure.csproj" />
+    <Project Path="src/Jajcarz.Server/Jajcarz.Server.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Jajcarz.Domain.Tests/Jajcarz.Domain.Tests.csproj" />
+    <Project Path="tests/Jajcarz.Integration.Tests/Jajcarz.Integration.Tests.csproj" />
+  </Folder>
+</Solution>

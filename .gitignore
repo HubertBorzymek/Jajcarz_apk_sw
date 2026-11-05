@@ -1,0 +1,22 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+TestResults/
+
+# Dane lokalne
+*.db
+*.db-shm
+*.db-wal
+
+# Sekrety
+.env
+.env.*
+!.env.example
+secrets.json
+
+# Interfejs
+node_modules/
+dist/

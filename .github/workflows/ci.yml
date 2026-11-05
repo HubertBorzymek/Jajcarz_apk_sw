@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Testy
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_PASSWORD: ci-only
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    steps:
+      - name: Pobranie repozytorium
+        uses: actions/checkout@v5
+
+      - name: .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Kompilacja
+        run: dotnet build Jajcarz.slnx --configuration Release
+
+      - name: Migracje zgodne z modelem
+        run: |
+          dotnet tool restore
+          dotnet ef migrations has-pending-model-changes \
+            --project src/Jajcarz.Infrastructure \
+            --startup-project src/Jajcarz.Infrastructure \
+            --configuration Release
+
+      - name: Testy na SQLite
+        run: dotnet test Jajcarz.slnx --configuration Release --no-build
+
+      - name: Testy na Postgresie
+        run: dotnet test Jajcarz.slnx --configuration Release --no-build
+        env:
+          JAJCARZ_TEST_POSTGRES: Host=localhost;Username=postgres;Password=ci-only

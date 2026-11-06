@@ -57,6 +57,15 @@ tests/Jajcarz.Integration.Tests/  FakePanel, ApiClient, wiadomości jak z firmwa
   publikujemy przed zwolnieniem zapisu, żeby kolejność była taka jak w bazie.
 - Odbiorca SSE, który nie nadąża, jest rozłączony i po połączeniu dostaje całą listę.
 - Klawisze w interfejsie liczymy od 1: adres `0.2` to „klawisz 3”.
+- Stan wspólny ekranów jest w `app/AppShell.tsx`. Każda zmiana stanu idzie przez
+  `offline/useChangeQueue`: najpierw trwała kolejka, potem wysyłka z `ageMs` i `changeKey`.
+- Kolejka trzyma dla produktu tylko ostatnią zmianę, tak jak panel. Odrzucona zmiana
+  (4xx) wypada z kolejki, a błąd sieci i 5xx ponawiają wysyłkę co 5 s.
+- Dane offline w `localStorage` są przypisane do loginu i usuwane po wylogowaniu.
+- Start aplikacji używa zapisanego loginu, a serwer potwierdza sesję w tle.
+- `sw.js` składa `pwa/servicePlugin.ts` z szablonu: lista plików i wersja przy buildzie.
+  Service worker trzyma tylko interfejs, nigdy `/api`.
+- `crypto.randomUUID` nie działa na `http` w sieci lokalnej. Klucz: `createChangeKey`.
 - W endpointach pisz `[FromServices] ProductService`: metoda `BindAsync` myli wiązanie.
 
 ## Środowisko
@@ -71,6 +80,10 @@ tests/Jajcarz.Integration.Tests/  FakePanel, ApiClient, wiadomości jak z firmwa
 - Serwer lokalny: `dotnet run --launch-profile Jajcarz.Server` w `src/Jajcarz.Server`,
   port 5080, dane z `DevSeed`, token `test-token`, konto `test` i hasło `test-password`.
 - Nie używaj `dotnet run --environment`: ustawienie nie dociera do aplikacji.
+- Wbudowany panel przeglądarki nie rejestruje service workera. Test PWA i offline:
+  `playwright-core` z `channel: 'msedge'` i `context.setOffline(true)`.
+- Ikony: `node scripts/generate-icons.mjs` w `src/Jajcarz.WebClient`.
+- Działający serwer blokuje pliki w `bin`. Zatrzymaj go przed `dotnet test`.
 
 ## Plan
 

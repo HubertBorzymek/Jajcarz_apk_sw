@@ -1,6 +1,7 @@
 import { useEffect, useReducer, useState, type Dispatch } from 'react';
 import { loadSession } from '../api/client';
 import type { Product } from '../api/types';
+import { loadProducts, saveProducts } from '../offline/localData';
 import { productsReducer, type ProductAction } from './productList';
 
 export type FeedStatus = 'connecting' | 'live' | 'offline';
@@ -10,6 +11,7 @@ const WATCHDOG_INTERVAL_MS = 15_000;
 
 /** Serwer wysyła ping co 25 s. Dłuższa cisza oznacza martwe połączenie, częste po wyjściu z zasięgu. */
 const SILENCE_LIMIT_MS = 60_000;
+const WAKE_SILENCE_LIMIT_MS = 30_000;
 
 interface ProductFeed {
   products: Product[];
@@ -18,11 +20,20 @@ interface ProductFeed {
   dispatch: Dispatch<ProductAction>;
 }
 
-/** Lista produktów na żywo. Po każdym połączeniu serwer wysyła najpierw całą listę. */
-export function useProductFeed(onSignedOut: () => void): ProductFeed {
-  const [products, dispatch] = useReducer(productsReducer, []);
-  const [loaded, setLoaded] = useState(false);
+/**
+ * Lista produktów na żywo. Po każdym połączeniu serwer wysyła najpierw całą listę.
+ * Ostatnia znana lista zostaje na telefonie, więc w sklepie bez zasięgu widać, co kupić.
+ */
+export function useProductFeed(login: string, onSignedOut: () => void): ProductFeed {
+  const [products, dispatch] = useReducer(productsReducer, login, loadProducts);
+  const [loaded, setLoaded] = useState(() => products.length > 0);
   const [status, setStatus] = useState<FeedStatus>('connecting');
+
+  useEffect(() => {
+    if (loaded) {
+      saveProducts(login, products);
+    }
+  }, [loaded, login, products]);
 
   useEffect(() => {
     let source: EventSource | null = null;
@@ -87,12 +98,26 @@ export function useProductFeed(onSignedOut: () => void): ProductFeed {
       }
     }, WATCHDOG_INTERVAL_MS);
 
+    // Telefon usypia stronę w tle, a połączenie często ginie po cichu. Po powrocie nie czekamy na watchdoga.
+    const wakeUp = () => {
+      const stale = Date.now() - lastSignal > WAKE_SILENCE_LIMIT_MS;
+      if (document.visibilityState === 'visible' && (stale || source?.readyState !== EventSource.OPEN)) {
+        window.clearTimeout(retryTimer);
+        source?.close();
+        void reconnect();
+      }
+    };
+
+    document.addEventListener('visibilitychange', wakeUp);
+    window.addEventListener('online', wakeUp);
     connect();
     return () => {
       stopped = true;
       source?.close();
       window.clearTimeout(retryTimer);
       window.clearInterval(watchdog);
+      document.removeEventListener('visibilitychange', wakeUp);
+      window.removeEventListener('online', wakeUp);
     };
   }, [onSignedOut]);
 

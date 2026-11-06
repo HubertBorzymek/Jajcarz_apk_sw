@@ -11,8 +11,8 @@ opisuje [docs/PROTOCOL.md](docs/PROTOCOL.md).
 ## Stan projektu
 
 Działa serwer panelu oraz aplikacja: logowanie, lista produktów, szybka zmiana stanu,
-dodawanie, edycja i usuwanie oraz zmiany na żywo w obie strony. Widok zakupowy i praca
-bez zasięgu dojdą w `v0.3.0`.
+dodawanie, edycja i usuwanie, zmiany na żywo w obie strony, lista zakupów oraz praca
+bez zasięgu. Aplikację można dodać do ekranu telefonu.
 
 | Wersja | Zakres |
 |---|---|
@@ -42,6 +42,14 @@ opisane w `appsettings.Development.json`. Produkcja używa bazy Postgres.
 
 Przy pracy nad interfejsem `npm run dev` w `src\Jajcarz.WebClient` odświeża stronę
 na bieżąco i przekazuje `/api` do działającego serwera.
+
+## Telefon i brak zasięgu
+
+Aplikacja instaluje się na telefonie przez „Dodaj do ekranu głównego”. Pamięta ostatnią
+listę produktów, a zmiany bez zasięgu czekają w kolejce i wysyłają się same po powrocie
+sieci. Instalacja i otwieranie bez sieci działają tylko na `https` i `localhost`. Przy
+adresie `http` w sieci lokalnej przeglądarka wyłącza service worker, więc jest to wtedy
+zwykła strona, choć kolejka zmian działa nadal.
 
 ## Konta
 

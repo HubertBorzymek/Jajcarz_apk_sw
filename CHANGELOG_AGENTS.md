@@ -2,6 +2,19 @@
 
 Najnowsze na górze. Krótko: co, dlaczego, co dalej.
 
+## 2026-11-06 (v0.3.0, bez taga)
+
+- `AppShell` przejął listę i kolejkę z `ProductsPage`, bo potrzebują ich wszystkie ekrany.
+- `offline/`: trwała kolejka, kopia listy, start bez czekania na serwer.
+- `shopping/`: `buildShoppingList` czysta, kolejność nie zmienia się po dotknięciu.
+- PWA: własny service worker z pluginu Vite, bez zależności. `StaticFileCaching`: `/assets`
+  na rok, reszta `no-cache`.
+- Znaleziono: `index.html` nie trafiał do listy plików, dopisany w szablonie.
+- Zweryfikowano w Edge z emulacją Pixel 7: rejestracja service workera, odświeżenie bez sieci,
+  kolejka po odświeżeniu, wysyłka po powrocie sieci, `changedBy` na serwerze.
+- Niezweryfikowane: prawdziwy telefon, instalacja na ekranie głównym, `https`.
+- Następny krok: CI, `v0.4.0`.
+
 ## 2026-11-06 (v0.2.0, bez taga)
 
 - Konta: PBKDF2, cookie na rok, `SessionStamp`, CSRF, limit logowań, polecenie `user set`.

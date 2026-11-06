@@ -1,22 +1,34 @@
 import { useCallback, useEffect, useState } from 'react';
 import { loadSession } from './api/client';
+import { AppShell } from './app/AppShell';
 import { LoginPage } from './auth/LoginPage';
-import { ProductsPage } from './products/ProductsPage';
+import { clearLocalData, loadLogin, saveLogin } from './offline/localData';
 
 type SessionState =
   | { kind: 'loading' }
   | { kind: 'unavailable' }
   | { kind: 'ready'; login: string | null };
 
+function initialSession(): SessionState {
+  // W sklepie bez zasięgu aplikacja ma się otworzyć od razu. Serwer potwierdzi sesję, gdy będzie dostępny.
+  const login = loadLogin();
+  return login === null ? { kind: 'loading' } : { kind: 'ready', login };
+}
+
 export function App() {
-  const [session, setSession] = useState<SessionState>({ kind: 'loading' });
+  const [session, setSession] = useState<SessionState>(initialSession);
 
   const refresh = useCallback(async () => {
     try {
       const { login } = await loadSession();
+      if (login === null) {
+        clearLocalData();
+      } else {
+        saveLogin(login);
+      }
       setSession({ kind: 'ready', login });
     } catch {
-      setSession({ kind: 'unavailable' });
+      setSession((current) => (current.kind === 'ready' && current.login !== null ? current : { kind: 'unavailable' }));
     }
   }, []);
 
@@ -40,5 +52,5 @@ export function App() {
   if (session.login === null) {
     return <LoginPage onLoggedIn={refresh} />;
   }
-  return <ProductsPage login={session.login} onSignedOut={refresh} />;
+  return <AppShell key={session.login} login={session.login} onSignedOut={refresh} />;
 }

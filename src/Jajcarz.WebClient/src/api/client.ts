@@ -75,7 +75,12 @@ export async function deleteProduct(id: string): Promise<void> {
   await send('DELETE', `/api/products/${id}`);
 }
 
-export async function changeProductState(id: string, state: ProductState): Promise<StateChangeResult> {
-  const response = await send('POST', `/api/products/${id}/state`, { state });
+export async function changeProductState(
+  id: string,
+  state: ProductState,
+  ageMs: number,
+  changeKey: string,
+): Promise<StateChangeResult> {
+  const response = await send('POST', `/api/products/${id}/state`, { state, ageMs, changeKey });
   return (await response.json()) as StateChangeResult;
 }

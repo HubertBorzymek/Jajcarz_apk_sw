@@ -27,7 +27,7 @@ if (app.Environment.IsDevelopment())
 app.UseForwardedHeaders();
 app.UseSecurityHeaders();
 app.UseDefaultFiles();
-app.UseStaticFiles();
+app.UseStaticFiles(StaticFileCaching.Options());
 app.UseWebSockets();
 app.UseAuthentication();
 app.UseAuthorization();
@@ -38,7 +38,7 @@ app.MapSessionEndpoints();
 app.MapProductEndpoints();
 app.MapEventStream();
 app.MapFallback("/api/{**rest}", () => Results.NotFound());
-app.MapFallbackToFile("index.html");
+app.MapFallbackToFile("index.html", StaticFileCaching.Options());
 
 await app.RunAsync();
 return 0;

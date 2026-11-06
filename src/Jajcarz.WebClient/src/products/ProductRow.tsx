@@ -1,23 +1,30 @@
 import { memo } from 'react';
 import type { Product, ProductState } from '../api/types';
 import { describeActor, describeKey, describeTime, STATE_LABELS, STATES } from './format';
+import type { SheetTarget } from './ProductSheet';
 
 interface ProductRowProps {
   product: Product;
-  displayedState: ProductState;
-  saving: boolean;
+  pendingState: ProductState | null;
   now: number;
-  onChangeState: (state: ProductState) => void;
-  onEdit: () => void;
+  onChangeState: (productId: string, state: ProductState) => void;
+  onEdit: (target: SheetTarget) => void;
 }
 
-function ProductRowView({ product, displayedState, saving, now, onChangeState, onEdit }: ProductRowProps) {
+function ProductRowView({ product, pendingState, now, onChangeState, onEdit }: ProductRowProps) {
+  const displayedState = pendingState ?? product.state;
+  const saving = pendingState !== null;
+
   return (
     <li className="product">
-      <button className="product-main" onClick={onEdit} aria-label={`Edytuj: ${product.name}`}>
+      <button
+        className="product-main"
+        onClick={() => onEdit({ kind: 'edit', product })}
+        aria-label={`Edytuj: ${product.name}`}
+      >
         <span className="product-name">{product.name}</span>
         <span className="product-meta">
-          {saving ? 'Zapisywanie…' : `${describeActor(product.changedBy)}, ${describeTime(product.changedAt, now)}`}
+          {saving ? 'Czeka na wysłanie…' : `${describeActor(product.changedBy)}, ${describeTime(product.changedAt, now)}`}
         </span>
         {product.addr && <span className="product-key">{describeKey(product.addr)}</span>}
       </button>
@@ -29,7 +36,7 @@ function ProductRowView({ product, displayedState, saving, now, onChangeState, o
             aria-pressed={displayedState === state}
             onClick={() => {
               if (displayedState !== state) {
-                onChangeState(state);
+                onChangeState(product.id, state);
               }
             }}
           >
@@ -41,11 +48,4 @@ function ProductRowView({ product, displayedState, saving, now, onChangeState, o
   );
 }
 
-export const ProductRow = memo(ProductRowView, (previous, next) => {
-  return (
-    previous.product === next.product &&
-    previous.displayedState === next.displayedState &&
-    previous.saving === next.saving &&
-    previous.now === next.now
-  );
-});
+export const ProductRow = memo(ProductRowView);

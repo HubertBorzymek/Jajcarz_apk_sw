@@ -2,6 +2,19 @@
 
 Testy wymagające panelu. Wynik zaznacz `[x]`, a problem opisz pod punktem.
 
+## v0.3.0: zakupy i telefon
+
+Instalacja i otwieranie bez sieci wymagają `https`, więc te punkty są możliwe dopiero
+po wdrożeniu. Reszta działa pod adresem komputera w sieci lokalnej.
+
+- [ ] Zakupy pokazują najpierw braki, a licznik na dolnym pasku się zgadza.
+- [ ] „Kupione” przekreśla pozycję, a panel od razu świeci na zielono.
+- [ ] „Cofnij” przywraca poprzedni stan na panelu.
+- [ ] Po wyjściu z Zakupów przekreślone pozycje znikają.
+- [ ] Zmiana w trybie samolotowym pokazuje „czeka” i wysyła się po powrocie sieci.
+- [ ] Po wdrożeniu: „Dodaj do ekranu głównego” daje ikonę i pełny ekran.
+- [ ] Po wdrożeniu: aplikacja otwiera się w trybie samolotowym z ostatnią listą.
+
 ## v0.2.0: aplikacja z panelem i telefonem
 
 Przygotowanie jak dla sekcji sieci lokalnej niżej. Zaloguj się kontem `test` z hasłem

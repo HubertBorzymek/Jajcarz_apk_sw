@@ -3,6 +3,14 @@
 ## Niewydane
 
 ### Dodano
+- Lista zakupów: najpierw braki, „Kupione” przekreśla pozycję, a „Cofnij” przywraca stan.
+- Dolna nawigacja z licznikiem produktów do kupienia.
+- Praca bez zasięgu: ostatnia lista zostaje na telefonie, a zmiany czekają w kolejce.
+- PWA: instalacja na telefonie, ikony, otwieranie aplikacji bez sieci.
+
+## Niewydane
+
+### Dodano
 - Logowanie: konta bez rejestracji, sesja na rok i wylogowanie urządzeń po zmianie hasła.
 - API produktów: lista, dodawanie, edycja, usuwanie i zmiana stanu.
 - Zmiany na żywo między panelem, telefonem i komputerem.

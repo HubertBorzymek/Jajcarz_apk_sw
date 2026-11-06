@@ -7,7 +7,12 @@ Najnowsze na górze. Krótko: co, dlaczego, co dalej.
 - `Dockerfile`, `deploy/`, `docs/WDROZENIE.md`, `/healthz`, job `image` i `publish` w CI.
 - Serwerowy GC wyłączony: aplikacja dzieli maszynę, limit kontenera 384 MB.
 - Azure, maszyna i repo Trumpfisha bez zmian: to wymaga zgody i decyzji właściciela.
-- Następny krok: decyzje z `docs/WDROZENIE.md`, tag `v0.5.0`, wdrożenie.
+- Zweryfikowano w CI: budowa obrazu, start na czystym Postgresie z migracjami, `user set`,
+  `panel set`, interfejs, logowanie, `compose config`, `caddy validate`.
+- Niezweryfikowane: obraz na maszynie, Caddy z prawdziwym ruchem, publikacja do GHCR,
+  `update.sh` i `backup.sh`.
+- Prace wstrzymane: dalej potrzebne są testy właściciela na telefonie i panelu oraz
+  decyzje z `docs/WDROZENIE.md`. Tagi `v0.2.0` do `v0.5.0` czekają na te testy.
 
 ## 2026-11-06 (v0.4.0, bez taga)
 

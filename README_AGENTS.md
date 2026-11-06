@@ -91,6 +91,8 @@ tests/Jajcarz.Integration.Tests/  FakePanel, ApiClient, wiadomości jak z firmwa
   `playwright-core` z `channel: 'msedge'` i `context.setOffline(true)`.
 - Ikony: `node scripts/generate-icons.mjs` w `src/Jajcarz.WebClient`.
 - Działający serwer blokuje pliki w `bin`. Zatrzymaj go przed `dotnet test`.
+- Bez `gh` wynik CI czytaj ze strony Actions. Publiczne API GitHuba ma 60 zapytań na
+  godzinę i nie filtruje po skróconym SHA, więc pętla z `curl` szybko je wyczerpuje.
 
 ## Plan
 

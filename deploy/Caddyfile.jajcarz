@@ -1,0 +1,17 @@
+# Blok dla Caddy, który obsługuje porty 80 i 443 na maszynie. Instrukcja: docs/WDROZENIE.md.
+{$JAJCARZ_HOSTNAME} {
+	# Strumień zdarzeń i WebSocket muszą przechodzić bez kompresji.
+	@compressible not path /api/events /ws/*
+	encode @compressible zstd gzip
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+	}
+
+	reverse_proxy jajcarz-app:8080 {
+		# Bez buforowania: zmiany na żywo mają dochodzić od razu.
+		flush_interval -1
+		# Jedno wdrożenie nie może kończyć się błędem 502 dla panelu, który ponawia połączenie.
+		lb_try_duration 10s
+	}
+}

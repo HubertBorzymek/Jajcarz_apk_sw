@@ -2,6 +2,13 @@
 
 Najnowsze na górze. Krótko: co, dlaczego, co dalej.
 
+## 2026-11-06 (v0.5.0, bez taga)
+
+- `Dockerfile`, `deploy/`, `docs/WDROZENIE.md`, `/healthz`, job `image` i `publish` w CI.
+- Serwerowy GC wyłączony: aplikacja dzieli maszynę, limit kontenera 384 MB.
+- Azure, maszyna i repo Trumpfisha bez zmian: to wymaga zgody i decyzji właściciela.
+- Następny krok: decyzje z `docs/WDROZENIE.md`, tag `v0.5.0`, wdrożenie.
+
 ## 2026-11-06 (v0.4.0, bez taga)
 
 - `PanelAdminService`, `/api/panels`, `panel set`, zdarzenia SSE `panel` i `key-press`.

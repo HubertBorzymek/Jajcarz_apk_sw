@@ -12,6 +12,9 @@
 - Mignięcie wybranym klawiszem, żeby znaleźć go na panelu.
 - Kolory stanów i jasność panelu ustawiane w aplikacji.
 - Polecenie `panel set` do rejestracji panelu i wymiany tokenu.
+- Obraz Dockera, pliki wdrożenia, instrukcja i kopie zapasowe.
+- Adres `/healthz` do sprawdzania stanu aplikacji i bazy.
+- CI buduje obraz, uruchamia go na czystej bazie i sprawdza zależności.
 
 ## Niewydane
 

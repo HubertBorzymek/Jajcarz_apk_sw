@@ -1,5 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
+  <PropertyGroup>
+    <!-- Mała aplikacja na wspólnej maszynie: serwerowy GC rezerwowałby za dużo pamięci. -->
+    <ServerGarbageCollection>false</ServerGarbageCollection>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Jajcarz.Application\Jajcarz.Application.csproj" />
     <ProjectReference Include="..\Jajcarz.Infrastructure\Jajcarz.Infrastructure.csproj" />

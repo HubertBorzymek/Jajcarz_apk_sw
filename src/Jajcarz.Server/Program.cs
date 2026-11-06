@@ -37,6 +37,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseRateLimiter();
 
+app.MapHealth();
 app.MapPanelSocket();
 app.MapSessionEndpoints();
 app.MapProductEndpoints();

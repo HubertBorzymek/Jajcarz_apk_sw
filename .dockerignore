@@ -1,0 +1,21 @@
+# Wynik budowania
+**/bin/
+**/obj/
+**/node_modules/
+src/Jajcarz.Server/wwwroot/
+
+# Dane i ustawienia lokalne
+**/*.db
+**/*.db-shm
+**/*.db-wal
+**/appsettings.Development.json
+**/*.user
+**/.env
+**/.env.*
+
+# Niepotrzebne w obrazie
+.git/
+.github/
+docs/
+deploy/
+tests/

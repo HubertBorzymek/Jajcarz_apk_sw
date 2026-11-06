@@ -27,6 +27,7 @@ src/Jajcarz.Application/     PanelService, ProductService, PanelLinks, IStore
 src/Jajcarz.Infrastructure/  EF Core, EfStore, migracje (tylko Postgres)
 src/Jajcarz.Server/          /ws/device, Api/ (REST, SSE), logowanie, seed lokalny
 src/Jajcarz.WebClient/       React + Vite, budowany do Jajcarz.Server/wwwroot
+deploy/                      compose, Caddy, update.sh, backup.sh, smoke-test.sh
 tests/Jajcarz.Domain.Tests/       reguły
 tests/Jajcarz.Integration.Tests/  FakePanel, ApiClient, wiadomości jak z firmware
 ```
@@ -97,6 +98,7 @@ tests/Jajcarz.Integration.Tests/  FakePanel, ApiClient, wiadomości jak z firmwa
   `v0.4.0` ekran panelu, `v0.5.0` Docker i wdrożenie testowe, `v1.0.0` produkcja.
 - Wdrożenie: wspólna maszyna `vm-trumpfish`, własne kontenery i Postgres w `/opt/jajcarz`,
   własna nazwa hosta przez Caddy Trumpfisha. React + Vite + PWA, SSE do przeglądarki.
+- Publikacja obrazu do GHCR tylko po tagu `v*`, wdrożenie ręcznie przez `deploy/update.sh`.
 - Konta: 4 osoby, loginy jeszcze nieustalone. Produkt: nazwa i opcjonalna kategoria.
 - „Kupione” w sklepie: od razu `OK`, przekreślenie do wyjścia z widoku, chwila na cofnięcie.
 
@@ -104,4 +106,5 @@ tests/Jajcarz.Integration.Tests/  FakePanel, ApiClient, wiadomości jak z firmwa
 
 - SW2 (`0.1`, GPIO33) chwilowo przestał działać i sam wrócił. Przy powtórce zmierz styk.
 - Brak domeny. Właściciel jej nie ma, a decyzja o zakupie należy do niego.
-- Przed `v0.5.0`: odczyt pamięci maszyny i ustalenie dostępu do Azure.
+- Przed wdrożeniem: decyzje i dostęp z `docs/WDROZENIE.md`. Na maszynie nic jeszcze nie zmieniono.
+- Obraz testuje tylko CI, bo lokalnie nie ma Dockera. Po zmianie `deploy/` sprawdź wynik joba `image`.

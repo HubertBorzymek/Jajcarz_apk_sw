@@ -85,6 +85,12 @@ npm test
 Symulator panelu wysyła dokładnie te same wiadomości co firmware. Testy na prawdziwym
 sprzęcie opisuje [docs/TESTY_MANUALNE.md](docs/TESTY_MANUALNE.md).
 
+## Wdrożenie
+
+Pliki wdrożenia są w `deploy`, a kroki w [docs/WDROZENIE.md](docs/WDROZENIE.md). CI
+buduje obraz przy każdym wypchnięciu i uruchamia go na czystej bazie. Obraz trafia do
+GHCR tylko po tagu `vX.Y.Z`.
+
 ## Budowa
 
 | Folder | Zawartość |
@@ -95,6 +101,7 @@ sprzęcie opisuje [docs/TESTY_MANUALNE.md](docs/TESTY_MANUALNE.md).
 | `src/Jajcarz.Server` | Połączenie z panelem, API, logowanie i uruchomienie serwera |
 | `src/Jajcarz.WebClient` | Interfejs w React |
 | `tests` | Testy reguł, API i symulator panelu |
+| `deploy` | Pliki wdrożenia: compose, Caddy, aktualizacja i kopie zapasowe |
 
 Stan należy do produktu, a klawisz jest do niego tylko przypięty. Dzięki temu produkt
 można przenieść na inny klawisz bez utraty stanu.

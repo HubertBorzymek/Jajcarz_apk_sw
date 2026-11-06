@@ -1,0 +1,59 @@
+# Aplikacja i jej baza na wspólnej maszynie. Instrukcja: docs/WDROZENIE.md.
+#
+#   docker compose -f compose.prod.yaml --env-file .env pull
+#   docker compose -f compose.prod.yaml --env-file .env up -d
+#
+# Żaden port nie jest publiczny. Ruch dochodzi tylko przez Caddy, po sieci jajcarz-proxy.
+
+name: jajcarz
+
+services:
+  app:
+    image: ${JAJCARZ_IMAGE}
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      # localhost, bo sprawdzanie stanu pyta kontener o siebie samego.
+      AllowedHosts: ${JAJCARZ_HOSTNAME};localhost
+      Database__Provider: Postgres
+      ConnectionStrings__Jajcarz: "Host=db;Port=5432;Database=jajcarz;Username=jajcarz;Password=${POSTGRES_PASSWORD}"
+      # Bez trwałych kluczy każde wdrożenie wylogowałoby wszystkie telefony.
+      DataProtection__KeyRingPath: /app/keys
+    volumes:
+      - dataprotection:/app/keys
+    networks:
+      default:
+      jajcarz-proxy:
+        aliases:
+          - jajcarz-app
+    mem_limit: 384m
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: jajcarz
+      POSTGRES_USER: jajcarz
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    # Dane to kilkadziesiąt wierszy, a maszynę dzieli z drugą aplikacją.
+    command: postgres -c shared_buffers=32MB -c max_connections=20
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U jajcarz -d jajcarz"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    mem_limit: 192m
+    shm_size: 64mb
+
+volumes:
+  pgdata:
+  dataprotection:
+
+networks:
+  jajcarz-proxy:
+    external: true

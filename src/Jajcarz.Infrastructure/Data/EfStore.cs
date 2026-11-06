@@ -62,6 +62,9 @@ public sealed class EfStore(JajcarzDbContext db, WriteGate gate) : IStore
     public Task<Device?> FindDeviceAsync(string id, CancellationToken cancellationToken) =>
         db.Devices.SingleOrDefaultAsync(device => device.Id == id, cancellationToken);
 
+    public async Task<IReadOnlyList<Device>> ListDevicesAsync(CancellationToken cancellationToken) =>
+        await db.Devices.OrderBy(device => device.Id).ToListAsync(cancellationToken);
+
     public Task<Device?> FindDeviceByTokenHashAsync(string tokenHash, CancellationToken cancellationToken) =>
         db.Devices.SingleOrDefaultAsync(device => device.TokenHash == tokenHash, cancellationToken);
 

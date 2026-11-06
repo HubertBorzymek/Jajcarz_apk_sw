@@ -60,7 +60,8 @@ body {
 }
 
 button,
-input {
+input,
+select {
   font: inherit;
   color: inherit;
 }
@@ -133,7 +134,8 @@ p {
   color: var(--text-muted);
 }
 
-.field input {
+.field input:not([type='range']),
+.field select {
   width: 100%;
   min-height: var(--tap);
   padding: 0 12px;
@@ -356,6 +358,10 @@ p {
   font-weight: 600;
 }
 
+.shop-state-ok {
+  color: var(--ok);
+}
+
 .shop-state-low {
   color: var(--low);
 }
@@ -373,6 +379,101 @@ p {
 .shop-item-bought .shop-state {
   color: var(--text-muted);
   text-decoration: line-through;
+}
+
+/* Panel */
+
+.group-title-spaced {
+  margin-top: 16px;
+}
+
+.panel-card {
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.panel-state {
+  font-weight: 600;
+  color: var(--out);
+}
+
+.panel-state-on {
+  color: var(--ok);
+}
+
+.panel-meta,
+.panel-hint {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.panel-hint {
+  margin-top: 8px;
+}
+
+.key-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: var(--tap);
+  padding: 8px 12px;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  background: none;
+  text-align: left;
+}
+
+li:last-child > .key-row {
+  border-bottom: 0;
+}
+
+.key-address {
+  flex: none;
+  width: 72px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.key-product {
+  flex: 1;
+  min-width: 0;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.key-product-empty {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.field input[type='range'] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+.color-row {
+  display: flex;
+  gap: 12px;
+}
+
+.color-field {
+  display: grid;
+  flex: 1;
+  gap: 4px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.color-field input {
+  width: 100%;
+  height: var(--tap);
+  padding: 2px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
 }
 
 /* Dolna nawigacja */

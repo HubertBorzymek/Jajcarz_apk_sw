@@ -11,8 +11,9 @@ opisuje [docs/PROTOCOL.md](docs/PROTOCOL.md).
 ## Stan projektu
 
 Działa serwer panelu oraz aplikacja: logowanie, lista produktów, szybka zmiana stanu,
-dodawanie, edycja i usuwanie, zmiany na żywo w obie strony, lista zakupów oraz praca
-bez zasięgu. Aplikację można dodać do ekranu telefonu.
+dodawanie, edycja i usuwanie, zmiany na żywo w obie strony, lista zakupów, praca bez
+zasięgu oraz ekran panelu: stan połączenia, przypisywanie klawiszy, kolory i jasność.
+Aplikację można dodać do ekranu telefonu.
 
 | Wersja | Zakres |
 |---|---|
@@ -60,6 +61,18 @@ Nie ma rejestracji. Konto zakłada się na serwerze, a hasło podaje na standard
 ```
 
 To samo polecenie zmienia hasło i wylogowuje to konto ze wszystkich urządzeń.
+
+## Panele
+
+Panel rejestruje się na serwerze. Polecenie wypisuje token tylko raz, a ponowne
+uruchomienie wymienia go na nowy:
+
+```powershell
+dotnet Jajcarz.Server.dll panel set 6825dd21a970
+```
+
+Numer panelu to `device_id` z logu firmware. Token i adres serwera wpisuje się w
+`config/secrets.h` w repozytorium firmware.
 
 ## Testy
 

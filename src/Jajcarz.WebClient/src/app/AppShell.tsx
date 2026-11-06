@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ApiError, logOut } from '../api/client';
 import { useChangeQueue } from '../offline/useChangeQueue';
+import { PanelPage } from '../panel/PanelPage';
 import { ProductsPage } from '../products/ProductsPage';
 import { useProductFeed, type FeedStatus } from '../products/useProductFeed';
 import { countToBuy } from '../shopping/shoppingList';
@@ -25,7 +26,7 @@ interface AppShellProps {
 /** Wspólny stan ekranów: lista na żywo, kolejka zmian, nagłówek i dolna nawigacja. */
 export function AppShell({ login, onSignedOut }: AppShellProps) {
   const signedOut = useCallback(() => void onSignedOut(), [onSignedOut]);
-  const { products, loaded, status, dispatch } = useProductFeed(login, signedOut);
+  const { products, loaded, status, dispatch, panelSignal, keyPress } = useProductFeed(login, signedOut);
   const route = useRoute();
   const [notice, setNotice] = useState<string | null>(null);
   const [now, setNow] = useState(() => Date.now());
@@ -89,9 +90,7 @@ export function AppShell({ login, onSignedOut }: AppShellProps) {
         </button>
       </header>
 
-      {route === 'shopping' ? (
-        <ShoppingPage products={products} loaded={loaded} pending={pending} onChangeState={changeState} />
-      ) : (
+      {route === 'products' && (
         <ProductsPage
           products={products}
           loaded={loaded}
@@ -99,6 +98,19 @@ export function AppShell({ login, onSignedOut }: AppShellProps) {
           now={now}
           dispatch={dispatch}
           onChangeState={changeState}
+          onSignedOut={signedOut}
+        />
+      )}
+      {route === 'shopping' && (
+        <ShoppingPage products={products} loaded={loaded} pending={pending} onChangeState={changeState} />
+      )}
+      {route === 'panel' && (
+        <PanelPage
+          products={products}
+          panelSignal={panelSignal}
+          keyPress={keyPress}
+          now={now}
+          onNotice={setNotice}
           onSignedOut={signedOut}
         />
       )}

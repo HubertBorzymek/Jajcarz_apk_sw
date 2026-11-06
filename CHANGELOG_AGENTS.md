@@ -2,6 +2,18 @@
 
 Najnowsze na górze. Krótko: co, dlaczego, co dalej.
 
+## 2026-11-06 (v0.4.0, bez taga)
+
+- `PanelAdminService`, `/api/panels`, `panel set`, zdarzenia SSE `panel` i `key-press`.
+- `LastSeenAt` reaguje też na `unassigned_press`.
+- Interfejs w `src/panel`: `PanelPage`, `KeySheet`, `ConfigEditor`, `usePanels`.
+- Znaleziono podczas przeglądu: stare naciśnięcie otwierałoby okno po wejściu na ekran,
+  a wybór koloru zalewałby panel wiadomościami. Oba naprawione.
+- Zweryfikowano: 114 testów .NET, 57 interfejsu, Edge z symulowanym panelem przez WebSocket:
+  przypięcie i `snapshot`, identyfikacja, suwak daje jedną wiadomość, rozłączenie na żywo.
+- Niezweryfikowane: prawdziwy panel z nowymi wiadomościami `config` i `identify` z tej aplikacji.
+- Następny krok: `v0.5.0`.
+
 ## 2026-11-06 (v0.3.0, bez taga)
 
 - `AppShell` przejął listę i kolejkę z `ProductsPage`, bo potrzebują ich wszystkie ekrany.

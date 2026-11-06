@@ -36,6 +36,8 @@ public interface IStore
 
     Task<Device?> FindDeviceAsync(string id, CancellationToken cancellationToken);
 
+    Task<IReadOnlyList<Device>> ListDevicesAsync(CancellationToken cancellationToken);
+
     Task<Device?> FindDeviceByTokenHashAsync(string tokenHash, CancellationToken cancellationToken);
 
     Task<Product?> FindProductAsync(Guid id, CancellationToken cancellationToken);

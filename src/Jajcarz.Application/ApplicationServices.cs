@@ -16,6 +16,7 @@ public static class ApplicationServices
         services.AddScoped<AccountService>();
         services.AddScoped<SnapshotBuilder>();
         services.AddScoped<PanelService>();
+        services.AddScoped<PanelAdminService>();
         services.AddScoped<ProductService>();
         return services;
     }

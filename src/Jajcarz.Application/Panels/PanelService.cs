@@ -32,6 +32,7 @@ public sealed class PanelService(
 
         links.Attach(deviceId, channel);
         links.Send(deviceId, await snapshots.BuildAsync(device, cancellationToken));
+        events.Publish(new PanelChanged(deviceId));
     }
 
     public async Task DisconnectAsync(string deviceId, IPanelChannel channel, CancellationToken cancellationToken)
@@ -41,6 +42,7 @@ public sealed class PanelService(
         var device = await RequireDeviceAsync(deviceId, cancellationToken);
         device.MarkSeen(clock.GetUtcNow());
         await write.CommitAsync(cancellationToken);
+        events.Publish(new PanelChanged(deviceId));
     }
 
     public async Task ApplyStateChangeAsync(string deviceId, PanelStateChange message, CancellationToken cancellationToken)
@@ -70,8 +72,16 @@ public sealed class PanelService(
             message.Seq, message.Addr, outcome != ChangeOutcome.Rejected, product.State, product.Rev));
     }
 
-    public void ReportUnassignedPress(string deviceId, PanelUnassignedPress press) =>
+    public async Task ReportUnassignedPressAsync(
+        string deviceId, PanelUnassignedPress press, CancellationToken cancellationToken)
+    {
         logger.LogInformation("Panel {DeviceId}: naciśnięto klawisz bez produktu {Addr}", deviceId, press.Addr);
+        await using var write = await store.BeginWriteAsync(cancellationToken);
+        var device = await RequireDeviceAsync(deviceId, cancellationToken);
+        device.MarkSeen(clock.GetUtcNow());
+        await write.CommitAsync(cancellationToken);
+        events.Publish(new UnassignedKeyPressed(deviceId, press.Addr));
+    }
 
     private async Task<ChangeOutcome> ApplyAsync(
         string deviceId, PanelStateChange message, PanelKey key, Product product, CancellationToken cancellationToken)

@@ -19,6 +19,9 @@ export function TabBar({ route, toBuy }: TabBarProps) {
           </span>
         )}
       </a>
+      <a className="tab" href={ROUTE_HASHES.panel} aria-current={route === 'panel' ? 'page' : undefined}>
+        Panel
+      </a>
     </nav>
   );
 }

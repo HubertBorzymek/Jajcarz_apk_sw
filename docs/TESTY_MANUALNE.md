@@ -2,6 +2,19 @@
 
 Testy wymagające panelu. Wynik zaznacz `[x]`, a problem opisz pod punktem.
 
+## v0.4.0: ekran panelu
+
+- [ ] Ekran Panel pokazuje „Połączony”, firmware i klawisze zgodne z panelem.
+- [ ] Odłączenie zasilania panelu zmienia stan najpóźniej po około 75 s.
+- [ ] Naciśnięcie wolnego klawisza na panelu otwiera jego przypisanie w aplikacji.
+- [ ] Po przypięciu dioda klawisza zapala się w kolorze stanu produktu.
+- [ ] „Mignij tym klawiszem” miga właściwą diodą przez około 3 s.
+- [ ] „Odepnij produkt” gasi diodę.
+- [ ] Przeniesienie produktu na inny klawisz gasi stary i zapala nowy.
+- [ ] Suwak jasności zmienia jasność diod.
+- [ ] Zmiana koloru stanu zmienia kolor diod w tym stanie.
+- [ ] Po restarcie panelu jasność i kolory zostają.
+
 ## v0.3.0: zakupy i telefon
 
 Instalacja i otwieranie bez sieci wymagają `https`, więc te punkty są możliwe dopiero

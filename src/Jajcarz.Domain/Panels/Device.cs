@@ -30,4 +30,8 @@ public sealed class Device
     public void ReportFirmware(string firmware) => Firmware = firmware;
 
     public void MarkSeen(DateTimeOffset now) => LastSeenAt = now;
+
+    public void Configure(PanelConfig config) => Config = config;
+
+    public void ReplaceToken(string tokenHash) => TokenHash = tokenHash;
 }

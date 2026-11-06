@@ -67,6 +67,12 @@ tests/Jajcarz.Integration.Tests/  FakePanel, ApiClient, wiadomości jak z firmwa
   Service worker trzyma tylko interfejs, nigdy `/api`.
 - `crypto.randomUUID` nie działa na `http` w sieci lokalnej. Klucz: `createChangeKey`.
 - W endpointach pisz `[FromServices] ProductService`: metoda `BindAsync` myli wiązanie.
+- SSE `panel` to tylko sygnał. Ekran panelu pobiera wtedy `/api/panels`, bez duplikowania
+  stanu w zdarzeniach. Przypięcia: `PUT` i `DELETE /api/products/{id}/key`.
+- Klawisz bez produktu wysyła `key-press`, a ekran panelu otwiera jego przypisanie.
+  Naciśnięcie sprzed wejścia na ekran jest ignorowane.
+- Wygląd panelu zapisujemy z opóźnieniem 400 ms: kolejka panelu ma 8 miejsc.
+- Panel rejestruje `panel set <device_id>`. Token ma 64 znaki hex, w bazie tylko skrót.
 
 ## Środowisko
 
@@ -97,6 +103,5 @@ tests/Jajcarz.Integration.Tests/  FakePanel, ApiClient, wiadomości jak z firmwa
 ## Otwarte
 
 - SW2 (`0.1`, GPIO33) chwilowo przestał działać i sam wrócił. Przy powtórce zmierz styk.
-- `LastSeenAt` zmienia się tylko przy części wiadomości. Popraw przed ekranem panelu w `v0.4.0`.
 - Brak domeny. Właściciel jej nie ma, a decyzja o zakupie należy do niego.
 - Przed `v0.5.0`: odczyt pamięci maszyny i ustalenie dostępu do Azure.

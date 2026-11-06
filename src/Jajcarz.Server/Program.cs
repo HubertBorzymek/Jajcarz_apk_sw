@@ -19,6 +19,10 @@ if (UserCommand.Matches(args))
 {
     return await UserCommand.RunAsync(app.Services, args);
 }
+if (PanelCommand.Matches(args))
+{
+    return await PanelCommand.RunAsync(app.Services, args);
+}
 if (app.Environment.IsDevelopment())
 {
     await DevelopmentSeed.ApplyAsync(app.Services, app.Configuration);
@@ -36,6 +40,7 @@ app.UseRateLimiter();
 app.MapPanelSocket();
 app.MapSessionEndpoints();
 app.MapProductEndpoints();
+app.MapPanelEndpoints();
 app.MapEventStream();
 app.MapFallback("/api/{**rest}", () => Results.NotFound());
 app.MapFallbackToFile("index.html", StaticFileCaching.Options());

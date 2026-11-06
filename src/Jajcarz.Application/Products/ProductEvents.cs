@@ -9,8 +9,13 @@ public sealed record ProductUpdated(ProductView Product) : ProductEvent;
 
 public sealed record ProductRemoved(Guid ProductId) : ProductEvent;
 
+/// <summary>Sygnał: stan panelu się zmienił. Ekran panelu pobiera wtedy aktualne dane.</summary>
+public sealed record PanelChanged(string DeviceId) : ProductEvent;
+
+public sealed record UnassignedKeyPressed(string DeviceId, string Addr) : ProductEvent;
+
 /// <summary>
-/// Zmiany produktów dla otwartych aplikacji. Publish nie czeka na odbiorców, więc można go
+/// Zmiany dla otwartych aplikacji. Publish nie czeka na odbiorców, więc można go
 /// wołać w trakcie zapisu. Dzięki temu zdarzenia mają tę samą kolejność co zmiany w bazie.
 /// </summary>
 public sealed class ProductEvents

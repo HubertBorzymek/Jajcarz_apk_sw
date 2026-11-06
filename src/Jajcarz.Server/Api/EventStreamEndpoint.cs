@@ -12,6 +12,8 @@ public static class EventStreamEndpoint
     private const string ListEvent = "products";
     private const string UpdatedEvent = "product";
     private const string RemovedEvent = "removed";
+    private const string PanelEvent = "panel";
+    private const string KeyPressEvent = "key-press";
     private const string HeartbeatEvent = "ping";
 
     /// <summary>Krótszy niż limity bezczynności pośredników, a klient widzi, że połączenie żyje.</summary>
@@ -57,6 +59,8 @@ public static class EventStreamEndpoint
             {
                 ProductUpdated updated => new SseItem<object>(updated.Product, UpdatedEvent),
                 ProductRemoved removed => new SseItem<object>(new { removed.ProductId }, RemovedEvent),
+                PanelChanged panel => new SseItem<object>(new { panel.DeviceId }, PanelEvent),
+                UnassignedKeyPressed press => new SseItem<object>(new { press.DeviceId, press.Addr }, KeyPressEvent),
                 var other => throw new InvalidOperationException($"Nieznane zdarzenie {other.GetType()}"),
             };
         }

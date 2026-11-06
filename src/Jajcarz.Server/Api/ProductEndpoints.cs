@@ -11,6 +11,8 @@ public sealed record ProductStateChangeRequest(ProductState State, long AgeMs = 
 
 public sealed record ProductStateResponse(bool Accepted, ProductView Product);
 
+public sealed record ProductKeyRequest(string DeviceId, string Addr);
+
 public static class ProductEndpoints
 {
     private const int MaxChangeKeyLength = 64;
@@ -25,6 +27,8 @@ public static class ProductEndpoints
         group.MapPut("/{id:guid}", Update);
         group.MapDelete("/{id:guid}", Delete);
         group.MapPost("/{id:guid}/state", ChangeState);
+        group.MapPut("/{id:guid}/key", Bind);
+        group.MapDelete("/{id:guid}/key", Unbind);
     }
 
     private static Task<IReadOnlyList<ProductView>> List(
@@ -82,6 +86,16 @@ public static class ProductEndpoints
             ? TypedResults.NotFound()
             : TypedResults.Ok(new ProductStateResponse(result!.Accepted, product));
     }
+
+    private static async Task<Results<NoContent, NotFound>> Bind(
+        Guid id, ProductKeyRequest request, [FromServices] ProductService products, CancellationToken cancellationToken) =>
+        await products.BindAsync(id, request.DeviceId, request.Addr, cancellationToken)
+            ? TypedResults.NoContent()
+            : TypedResults.NotFound();
+
+    private static async Task<Results<NoContent, NotFound>> Unbind(
+        Guid id, [FromServices] ProductService products, CancellationToken cancellationToken) =>
+        await products.UnbindAsync(id, cancellationToken) ? TypedResults.NoContent() : TypedResults.NotFound();
 
     private static IResult InvalidFields() => Results.Problem(
         $"Nazwa jest wymagana i może mieć {Product.MaxNameLength} znaków, a kategoria {Product.MaxCategoryLength}.",

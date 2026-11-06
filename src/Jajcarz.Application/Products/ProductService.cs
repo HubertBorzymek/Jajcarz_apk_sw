@@ -123,7 +123,9 @@ public sealed class ProductService(
         await write.CommitAsync(cancellationToken);
         events.Publish(new ProductUpdated(ProductView.From(product, addr)));
 
-        await SendSnapshotsAsync([deviceId, .. previous is null ? [] : new[] { previous.DeviceId }], cancellationToken);
+        string[] panels = previous is null ? [deviceId] : [deviceId, previous.DeviceId];
+        await SendSnapshotsAsync(panels, cancellationToken);
+        PublishPanelChanges(panels);
         return true;
     }
 
@@ -143,6 +145,7 @@ public sealed class ProductService(
         }
 
         await SendSnapshotsAsync([key.DeviceId], cancellationToken);
+        PublishPanelChanges([key.DeviceId]);
         return true;
     }
 
@@ -163,8 +166,17 @@ public sealed class ProductService(
         if (key is not null)
         {
             await SendSnapshotsAsync([key.DeviceId], cancellationToken);
+            PublishPanelChanges([key.DeviceId]);
         }
         return true;
+    }
+
+    private void PublishPanelChanges(IEnumerable<string> deviceIds)
+    {
+        foreach (var deviceId in deviceIds.Distinct())
+        {
+            events.Publish(new PanelChanged(deviceId));
+        }
     }
 
     private async Task<ProductView> ViewAsync(Product product, CancellationToken cancellationToken)

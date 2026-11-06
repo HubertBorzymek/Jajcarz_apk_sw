@@ -7,6 +7,11 @@
 - Dolna nawigacja z licznikiem produktów do kupienia.
 - Praca bez zasięgu: ostatnia lista zostaje na telefonie, a zmiany czekają w kolejce.
 - PWA: instalacja na telefonie, ikony, otwieranie aplikacji bez sieci.
+- Ekran panelu: stan połączenia, wersja firmware i lista klawiszy, na żywo.
+- Przypisywanie produktu do klawisza, także przez naciśnięcie wolnego klawisza.
+- Mignięcie wybranym klawiszem, żeby znaleźć go na panelu.
+- Kolory stanów i jasność panelu ustawiane w aplikacji.
+- Polecenie `panel set` do rejestracji panelu i wymiany tokenu.
 
 ## Niewydane
 

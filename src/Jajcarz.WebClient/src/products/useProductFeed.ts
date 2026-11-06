@@ -13,11 +13,19 @@ const WATCHDOG_INTERVAL_MS = 15_000;
 const SILENCE_LIMIT_MS = 60_000;
 const WAKE_SILENCE_LIMIT_MS = 30_000;
 
+export interface KeyPress {
+  deviceId: string;
+  addr: string;
+}
+
 interface ProductFeed {
   products: Product[];
   loaded: boolean;
   status: FeedStatus;
   dispatch: Dispatch<ProductAction>;
+  /** Rośnie przy zmianie stanu panelu i po każdym połączeniu, żeby ekran panelu pobrał dane. */
+  panelSignal: number;
+  keyPress: KeyPress | null;
 }
 
 /**
@@ -28,6 +36,8 @@ export function useProductFeed(login: string, onSignedOut: () => void): ProductF
   const [products, dispatch] = useReducer(productsReducer, login, loadProducts);
   const [loaded, setLoaded] = useState(() => products.length > 0);
   const [status, setStatus] = useState<FeedStatus>('connecting');
+  const [panelSignal, setPanelSignal] = useState(0);
+  const [keyPress, setKeyPress] = useState<KeyPress | null>(null);
 
   useEffect(() => {
     if (loaded) {
@@ -77,9 +87,12 @@ export function useProductFeed(login: string, onSignedOut: () => void): ProductF
         dispatch({ type: 'list', products: list });
         setLoaded(true);
         setStatus('live');
+        setPanelSignal((signal) => signal + 1);
       });
       listen('product', (product: Product) => dispatch({ type: 'product', product }));
       listen('removed', ({ productId }: { productId: string }) => dispatch({ type: 'removed', productId }));
+      listen('panel', () => setPanelSignal((signal) => signal + 1));
+      listen('key-press', (press: KeyPress) => setKeyPress(press));
       listen('ping', () => undefined);
 
       // Po zerwaniu sieci EventSource wznawia się sam, ale po 401 zamyka się na stałe.
@@ -121,5 +134,5 @@ export function useProductFeed(login: string, onSignedOut: () => void): ProductF
     };
   }, [onSignedOut]);
 
-  return { products, loaded, status, dispatch };
+  return { products, loaded, status, dispatch, panelSignal, keyPress };
 }

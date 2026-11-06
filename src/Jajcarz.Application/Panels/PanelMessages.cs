@@ -40,3 +40,11 @@ public sealed record StateSetMessage(string Addr, ProductState State, long Rev, 
         product.ChangedBy,
         product.ChangedAt.UtcDateTime.ToString("yyyy-MM-dd'T'HH:mm:ss'Z'", CultureInfo.InvariantCulture));
 }
+
+public sealed record ConfigMessage(int Brightness, IReadOnlyDictionary<ProductState, int[]> Colors)
+    : PanelMessage("config")
+{
+    public static ConfigMessage For(PanelConfig config) => new(config.Brightness, config.Colors);
+}
+
+public sealed record IdentifyMessage(string Addr, int DurationMs) : PanelMessage("identify");

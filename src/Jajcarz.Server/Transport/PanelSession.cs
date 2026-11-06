@@ -47,11 +47,7 @@ public sealed class PanelSession(string deviceId, PanelConnection connection, IS
                     break;
                 case "unassigned_press" when _introduced:
                     var press = root.Deserialize<PanelUnassignedPress>(PanelJson.Options)!;
-                    await WithPanelAsync(panel =>
-                    {
-                        panel.ReportUnassignedPress(deviceId, press);
-                        return Task.CompletedTask;
-                    });
+                    await WithPanelAsync(panel => panel.ReportUnassignedPressAsync(deviceId, press, cancellationToken));
                     break;
                 default:
                     logger.LogWarning("Panel {DeviceId}: nieobsługiwana wiadomość {Text}", deviceId, text);

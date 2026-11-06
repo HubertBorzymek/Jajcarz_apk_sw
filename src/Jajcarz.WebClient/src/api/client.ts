@@ -1,4 +1,12 @@
-import type { Product, ProductFields, ProductState, Session, StateChangeResult } from './types';
+import type {
+  PanelConfig,
+  PanelView,
+  Product,
+  ProductFields,
+  ProductState,
+  Session,
+  StateChangeResult,
+} from './types';
 
 export class ApiError extends Error {
   constructor(
@@ -83,4 +91,28 @@ export async function changeProductState(
 ): Promise<StateChangeResult> {
   const response = await send('POST', `/api/products/${id}/state`, { state, ageMs, changeKey });
   return (await response.json()) as StateChangeResult;
+}
+
+export async function listPanels(): Promise<PanelView[]> {
+  const response = await fetch('/api/panels', { signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS) });
+  if (!response.ok) {
+    throw new ApiError(response.status, await errorMessage(response));
+  }
+  return (await response.json()) as PanelView[];
+}
+
+export async function savePanelConfig(deviceId: string, config: PanelConfig): Promise<void> {
+  await send('PUT', `/api/panels/${deviceId}/config`, config);
+}
+
+export async function identifyKey(deviceId: string, addr: string): Promise<void> {
+  await send('POST', `/api/panels/${deviceId}/keys/${addr}/identify`);
+}
+
+export async function bindProduct(productId: string, deviceId: string, addr: string): Promise<void> {
+  await send('PUT', `/api/products/${productId}/key`, { deviceId, addr });
+}
+
+export async function unbindProduct(productId: string): Promise<void> {
+  await send('DELETE', `/api/products/${productId}/key`);
 }

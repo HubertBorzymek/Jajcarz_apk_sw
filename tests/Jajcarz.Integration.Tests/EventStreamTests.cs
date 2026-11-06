@@ -120,6 +120,7 @@ public class EventStreamTests : IAsyncLifetime
         await _app.UseProductsAsync(service => service.UnbindAsync(product.Id, CancellationToken.None));
 
         Assert.Equal("0.3", (await events.ExpectAsync("product")).GetProperty("addr").GetString());
+        await events.ExpectAsync("panel");
         Assert.Null((await events.ExpectAsync("product")).GetProperty("addr").GetString());
     }
 

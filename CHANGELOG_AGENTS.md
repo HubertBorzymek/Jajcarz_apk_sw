@@ -2,6 +2,19 @@
 
 Najnowsze na górze. Krótko: co, dlaczego, co dalej.
 
+## 2026-11-06 (tagi v0.2.0 do v0.5.0)
+
+- Właściciel polecił zrobić wszystko poza wdrożeniem na Azure, więc tagi stanęły przed jego
+  testami. Reszta `docs/TESTY_MANUALNE.md` nadal czeka: telefon, prawdziwy panel z `config`
+  i `identify`, instalacja PWA.
+- Znaleziony błąd: zrzut bez `--clean` nie wracał do bazy z tabelami. Naprawione w `backup.sh`.
+- `deploy/deploy-test.sh` w jobie `image`: rejestr, `update.sh`, Caddy po http, Secure za proxy,
+  aktualizacja bez wylogowania, kopia i przywrócenie. Krok przeszedł (43 s). Logi wymagają
+  zalogowania na GitHubie, więc potwierdza to wynik kroku i `set -e`, nie odczyt logu.
+- Docker robi sprawdzenia co 5 s w `start-period`, stąd szybka zmiana stanu na `healthy`.
+- Niezweryfikowane: Caddy z certyfikatem, maszyna docelowa, pamięć maszyny.
+- Następny krok: testy właściciela, decyzje z `docs/WDROZENIE.md`, wdrożenie, `v1.0.0`.
+
 ## 2026-11-06 (v0.5.0, bez taga)
 
 - `Dockerfile`, `deploy/`, `docs/WDROZENIE.md`, `/healthz`, job `image` i `publish` w CI.

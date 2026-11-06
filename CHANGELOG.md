@@ -2,21 +2,38 @@
 
 ## Niewydane
 
+Nic.
+
+## v0.5.0 (2026-11-06)
+
 ### Dodano
-- Lista zakupów: najpierw braki, „Kupione” przekreśla pozycję, a „Cofnij” przywraca stan.
-- Dolna nawigacja z licznikiem produktów do kupienia.
-- Praca bez zasięgu: ostatnia lista zostaje na telefonie, a zmiany czekają w kolejce.
-- PWA: instalacja na telefonie, ikony, otwieranie aplikacji bez sieci.
+- Obraz Dockera, pliki wdrożenia, instrukcja i kopie zapasowe.
+- Adres `/healthz` do sprawdzania stanu aplikacji i bazy.
+- CI buduje obraz, uruchamia go na czystej bazie i sprawdza zależności.
+- CI przechodzi całe wdrożenie: aktualizację, Caddy, kopię zapasową i jej przywrócenie.
+
+### Naprawiono
+- Kopię zapasową można przywrócić do bazy, w której są już tabele.
+- Przerwany zrzut nie zostaje na dysku jako kopia.
+
+## v0.4.0 (2026-11-06)
+
+### Dodano
 - Ekran panelu: stan połączenia, wersja firmware i lista klawiszy, na żywo.
 - Przypisywanie produktu do klawisza, także przez naciśnięcie wolnego klawisza.
 - Mignięcie wybranym klawiszem, żeby znaleźć go na panelu.
 - Kolory stanów i jasność panelu ustawiane w aplikacji.
 - Polecenie `panel set` do rejestracji panelu i wymiany tokenu.
-- Obraz Dockera, pliki wdrożenia, instrukcja i kopie zapasowe.
-- Adres `/healthz` do sprawdzania stanu aplikacji i bazy.
-- CI buduje obraz, uruchamia go na czystej bazie i sprawdza zależności.
 
-## Niewydane
+## v0.3.0 (2026-11-06)
+
+### Dodano
+- Lista zakupów: najpierw braki, „Kupione” przekreśla pozycję, a „Cofnij” przywraca stan.
+- Dolna nawigacja z licznikiem produktów do kupienia.
+- Praca bez zasięgu: ostatnia lista zostaje na telefonie, a zmiany czekają w kolejce.
+- PWA: instalacja na telefonie, ikony, otwieranie aplikacji bez sieci.
+
+## v0.2.0 (2026-11-06)
 
 ### Dodano
 - Logowanie: konta bez rejestracji, sesja na rok i wylogowanie urządzeń po zmianie hasła.

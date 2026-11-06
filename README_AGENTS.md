@@ -108,5 +108,7 @@ tests/Jajcarz.Integration.Tests/  FakePanel, ApiClient, wiadomości jak z firmwa
 
 - SW2 (`0.1`, GPIO33) chwilowo przestał działać i sam wrócił. Przy powtórce zmierz styk.
 - Brak domeny. Właściciel jej nie ma, a decyzja o zakupie należy do niego.
+- Tagi do `v0.5.0` stoją bez ręcznych testów właściciela na telefonie. Wyniki z
+  `docs/TESTY_MANUALNE.md` mogą wymagać poprawek w kolejnej wersji.
 - Przed wdrożeniem: decyzje i dostęp z `docs/WDROZENIE.md`. Na maszynie nic jeszcze nie zmieniono.
 - Obraz testuje tylko CI, bo lokalnie nie ma Dockera. Po zmianie `deploy/` sprawdź wynik joba `image`.

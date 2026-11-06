@@ -95,6 +95,9 @@ jobs:
             -v "$PWD/deploy/Caddyfile.jajcarz:/etc/caddy/Caddyfile:ro" \
             caddy:2-alpine caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
 
+      - name: Próba wdrożenia
+        run: bash deploy/deploy-test.sh jajcarz:ci
+
   publish:
     name: Publikacja obrazu
     needs: [test, image]

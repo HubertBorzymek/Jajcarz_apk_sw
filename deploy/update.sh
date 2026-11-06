@@ -6,7 +6,8 @@
 set -euo pipefail
 
 VERSION=${1:?Podaj wersję, np. v0.5.0}
-DIR=/opt/jajcarz
+DIR=${JAJCARZ_DIR:-/opt/jajcarz}
+IMAGE_REPO=${JAJCARZ_IMAGE_REPO:-ghcr.io/hubertborzymek/jajcarz}
 ENV_FILE="$DIR/.env"
 HEALTH_TIMEOUT=180
 
@@ -14,7 +15,7 @@ compose() {
     docker compose -f "$DIR/compose.prod.yaml" --env-file "$ENV_FILE" "$@"
 }
 
-sed -i "s|^JAJCARZ_IMAGE=.*|JAJCARZ_IMAGE=ghcr.io/hubertborzymek/jajcarz:$VERSION|" "$ENV_FILE"
+sed -i "s|^JAJCARZ_IMAGE=.*|JAJCARZ_IMAGE=$IMAGE_REPO:$VERSION|" "$ENV_FILE"
 compose pull app
 compose up -d
 

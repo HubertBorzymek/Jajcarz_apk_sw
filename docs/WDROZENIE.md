@@ -99,7 +99,8 @@ W `config/secrets.h` w repozytorium firmware ustaw:
 echo '30 3 * * * root /opt/jajcarz/backup.sh' | sudo tee /etc/cron.d/jajcarz-backup
 ```
 
-Przywrócenie opisuje `backup.sh`. Sprawdź je przynajmniej raz.
+Przywrócenie opisuje `backup.sh`. CI sprawdza je przy każdym wypchnięciu razem z
+`update.sh` i Caddy (`deploy/deploy-test.sh`), ale na maszynie sprawdź je przynajmniej raz.
 
 ## 6. Sprawdzenie
 

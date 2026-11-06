@@ -27,7 +27,7 @@ src/Jajcarz.Application/     PanelService, ProductService, PanelLinks, IStore
 src/Jajcarz.Infrastructure/  EF Core, EfStore, migracje (tylko Postgres)
 src/Jajcarz.Server/          /ws/device, Api/ (REST, SSE), logowanie, seed lokalny
 src/Jajcarz.WebClient/       React + Vite, budowany do Jajcarz.Server/wwwroot
-deploy/                      compose, Caddy, update.sh, backup.sh, smoke-test.sh
+deploy/                      compose, Caddy, update.sh, backup.sh, smoke-test.sh, deploy-test.sh
 tests/Jajcarz.Domain.Tests/       reguły
 tests/Jajcarz.Integration.Tests/  FakePanel, ApiClient, wiadomości jak z firmware
 ```

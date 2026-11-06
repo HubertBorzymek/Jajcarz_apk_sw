@@ -12,7 +12,8 @@ Najnowsze na górze. Krótko: co, dlaczego, co dalej.
   aktualizacja bez wylogowania, kopia i przywrócenie. Krok przeszedł (43 s). Logi wymagają
   zalogowania na GitHubie, więc potwierdza to wynik kroku i `set -e`, nie odczyt logu.
 - Docker robi sprawdzenia co 5 s w `start-period`, stąd szybka zmiana stanu na `healthy`.
-- Niezweryfikowane: Caddy z certyfikatem, maszyna docelowa, pamięć maszyny.
+- Obraz `ghcr.io/hubertborzymek/jajcarz:v0.5.0` opublikowany, pakiet jest publiczny.
+- Niezweryfikowane: pobranie i start tego obrazu na maszynie, Caddy z certyfikatem, pamięć maszyny.
 - Następny krok: testy właściciela, decyzje z `docs/WDROZENIE.md`, wdrożenie, `v1.0.0`.
 
 ## 2026-11-06 (v0.5.0, bez taga)
